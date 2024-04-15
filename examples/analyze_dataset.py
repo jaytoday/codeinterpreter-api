@@ -1,8 +1,7 @@
-from codeinterpreterapi import CodeInterpreterSession
-from codeinterpreterapi.schema import File
+from codeinterpreterapi import CodeInterpreterSession, File
 
 
-async def main():
+async def main() -> None:
     # context manager for start/stop of the session
     async with CodeInterpreterSession() as session:
         # define the user request
@@ -10,16 +9,12 @@ async def main():
         files = [
             File.from_path("examples/assets/iris.csv"),
         ]
-        
-        # generate the response
-        response = await session.generate_response(
-            user_request, files=files
-        )
 
-        # ouput the response (text + image)
-        print("AI: ", response.content)
-        for file in response.files:
-            file.show_image()
+        # generate the response
+        response = await session.agenerate_response(user_request, files=files)
+
+        # output the response (text + image)
+        response.show()
 
 
 if __name__ == "__main__":
